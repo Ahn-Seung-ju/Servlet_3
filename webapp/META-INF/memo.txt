@@ -1,0 +1,74 @@
+원칙) Model2 기반의 MVC 패턴 사용 프로젝트
+Model  (DTO , DAO) 	>> java
+View (JSP)			
+Controller(Servlet)	>> 관리
+
+-----------
+JSP 없던 시절 >> Servlet 만 있던 시절
+지금 servlet 연습 ...
+JSP 파일 사용하지 않고 DB작업 (servlet 가지고 웹 서비스 )
+
+create table memo(
+	id varchar2(15) not null,
+	email varchar2(20) not null,
+	content varchar2(100)
+);
+
+DB 작업 : ojdbc6.jar 파일 
+
+
+웹 경로
+
+ [ jsp 파일 ]
+ 
+ <h3>GET 방식 요청</h3>
+	<a href="<%= request.getContextPath()%>/Login.do?id=hong">로그인</a>
+	<hr>
+	<h3>POST 방식 요청</h3>
+	<form action="<%=request.getContextPath()%>/Login.do" method="post">
+		<input type="text" name="id">
+		<input type="submit" value="로그인">	
+</form>
+ 
+ 
+[ html  ] 원칙적으로 서버요청 경로에  / 붙이지 않는다
+
+1. <a href="/MemoList">목록보기</a>   >>>>   localhost:8090/MemoList
+ 
+2. <a href="MemoList">목록보기</a>    >>>>   localhost:8090/WebServlet_3/MemoList
+
+
+3. <a href="/member/MemoList">목록보기</a> >>>> localhost:8090/member/MemoList
+
+4. <a href="member/MemoList">목록보기</a>  >>>> localhost:8090/WebServlet_3/member/MemoList
+
+5.
+<form name="f" action="/MemoServlet" method="get">  localhost:8090/MemoServlet
+
+<form name="f" action="MemoServlet" method="get">  localhost:8090/WebServlet_3/MemoServlet
+
+
+
+==============================================================================================================================
+
+http://localhost:8090/WebServlet_3/MemoList -> 요청 -> mapping (@WebServlet("/MemoList")) 
+ -> MemoList 실행 -> doGET or doPOST 실행 -> private void doProcess 실행 -> DB 작업 -> UI 작업 -> 전달 > Client
+
+
+
+
+
+<a href="memo.html">글쓰기</a> 클릭하면 .... -> 요청 -> memo.html -> Client 전달
+​
+Client memo.html -> 입력 -> 전송 <form name="f" action="MemoServlet" method="get"> -> 
+
+http://localhost:8090/WebServlet_3/MemoServlet?id=1&content=2 서버요청 -> 주소 mapping
+
+->@WebServlet("/MemoServlet") -> Memoservlet 실행 -> doGET or doPOST 실행 -> private void doProcess 실행 
+​
+-> DB작업 (insert) -> 성공 유무 -> 성공 -> location.href='MemoList' 요청하게 -> http://localhost:8090/WebServlet_3/MemoList
+
+
+
+
+
